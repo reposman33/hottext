@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { HottextComponent } from './hottext.component';
+import { HottextComponent } from './dynamictext.component';
 
 describe('HottextComponent', () => {
   let component: HottextComponent;
@@ -8,7 +8,7 @@ describe('HottextComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HottextComponent]
+      imports: [HottextComponent],
     });
     fixture = TestBed.createComponent(HottextComponent);
     component = fixture.componentInstance;

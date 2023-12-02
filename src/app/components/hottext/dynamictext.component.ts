@@ -10,13 +10,13 @@ import {
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'app-hottext',
+  selector: 'dynamictext',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './hottext.component.html',
-  styleUrls: ['./hottext.component.scss'],
+  templateUrl: './dynamictext.component.html',
+  styleUrls: ['./dynamictext.component.scss'],
 })
-export class HottextComponent implements OnInit, AfterViewInit {
+export class DynamicTextComponent implements OnInit, AfterViewInit {
   @HostBinding('attr.class') cssClass!: string;
   public hottext: string = '';
 
