@@ -3,6 +3,7 @@ import {
   Component,
   ElementRef,
   HostBinding,
+  HostListener,
   OnInit,
   Renderer2,
 } from '@angular/core';
@@ -18,7 +19,6 @@ import { CommonModule } from '@angular/common';
 export class HottextComponent implements OnInit, AfterViewInit {
   @HostBinding('attr.class') cssClass!: string;
   public hottext: string = '';
-  public hotTextContainer = '';
 
   constructor(private elementRef: ElementRef, private renderer: Renderer2) {}
 
@@ -30,13 +30,17 @@ export class HottextComponent implements OnInit, AfterViewInit {
     setTimeout(() => {
       this.hottext = this.elementRef.nativeElement.textContent;
       this.elementRef.nativeElement.innerHTML = this.hottext;
-      this.hotTextContainer = 'hotTextContainer';
-      console.log(this.elementRef.nativeElement.innerHTML);
-    }, 1000);
+    }, 0);
   }
 
-  showPopup(e: any) {
-    e.srcElement.innerHTML =
-      e.srcElement.innerHTML == 'World' ? 'Marc' : 'World';
+  @HostListener('click', ['$event'])
+  showPopup(event: any) {
+    console.log(
+      event.target.dataset.hottext == ''
+        ? 'U clicked op een hot woord'
+        : 'Geen hot woord...'
+    );
+    // e.srcElement.innerHTML =
+    //   e.srcElement.innerHTML == 'World' ? 'Marc' : 'World';
   }
 }
