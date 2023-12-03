@@ -1,15 +1,18 @@
 import {
   AfterViewInit,
   Component,
-  ElementRef,
-  HostBinding,
   HostListener,
-  OnInit,
   Renderer2,
   ViewChild,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
+/**
+ * === README ===
+ * Deze component maakt het mogelijk delen in een tekst te vervangen door tekst uit een popupvenster. Bijvoorbeeld: in een tekst is een wood of woorden omkaderd (zg 'hottext'). Klik op de omkaderde tekst en een popup verschijnt met een of meerdere regels tekst. Klik op een regel in de popup en de popup verdwijnt. De oorspronkelijke omkaderde tekst is vervangen door de tekst uit de popup.
+ * Hoe werkt dat?
+ * De tekst de vertoond wordt, wordt via transclusion (ng-content) opgenomen in de view van de component. Omdat deze tekst als HTML opgemaakt is kunnen we delen van de tekst markeren met het data attribuut: data-hottext="OpenAI". Alleen teksten met zo'n attribuut geven een popup na klik. De waarde van het data-attribuut bepaalt welke alternatieve tekst er in de popup worden vertoond.
+ */
 @Component({
   selector: 'dynamictext',
   standalone: true,
@@ -18,12 +21,12 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./dynamictext.component.scss'],
 })
 export class DynamicTextComponent implements AfterViewInit {
-  @ViewChild('elementHost')
-  elementHost!: any;
+  @ViewChild('popupHost')
+  popupHost!: any;
   popup!: any;
-  dynamicTextAlternatives!: { [key: string]: string[] };
-
-  @HostBinding('attr.class') cssClass!: string;
+  popupTexts!: { [key: string]: string[] };
+  // dit is het clickevent van text nodig om later te vervangen door popup text
+  textClickContext: any;
 
   FILEPATH_TO_CLOSEBUTTON = '/assets/images/cross-close-button.png';
   constructor(private renderer: Renderer2) {}
@@ -33,8 +36,11 @@ export class DynamicTextComponent implements AfterViewInit {
     this.createPopUpWindow();
   }
 
+  /**
+   * @description - maak de teksten voor popup window
+   */
   initializePopupWindowTexts() {
-    this.dynamicTextAlternatives = {
+    this.popupTexts = {
       OpenAI: [
         'DeepMind',
         'Usage',
@@ -51,19 +57,28 @@ export class DynamicTextComponent implements AfterViewInit {
     };
   }
 
+  /**
+   * onHotWordClick
+   * @description - afhandelen van een klik op een woord in de tekst
+   * @param event - clickEvent
+   */
   @HostListener('click', ['$event'])
   onHotWordClick(event: any) {
-    if (
-      Object.keys(this.dynamicTextAlternatives).includes(
-        event.target.dataset.hottext
-      )
-    ) {
+    // check of dit de popup triggert
+    if (Object.keys(this.popupTexts).includes(event.target.dataset.hottext)) {
+      // bewaar de context - later nodig bij veranderen woord met gekozen alternatief uit popup
+      this.textClickContext = event;
       this.hidePopup();
-      this.updatePopupText(event.target.dataset.hottext);
+      this.updatePopupTexts(event.target.dataset.hottext);
       this.showPopup({ posX: event.clientX, posY: event.clientY });
     }
   }
 
+  /**
+   * showPopup
+   * @description - kliklocatie in de tekst. Gebrik om positie popup window te definieren
+   * @param location
+   */
   showPopup(location: { posX: number; posY: number }) {
     this.renderer.setStyle(this.popup, 'top', location.posY + 'px');
     this.renderer.setStyle(this.popup, 'left', location.posX + 'px');
@@ -76,9 +91,8 @@ export class DynamicTextComponent implements AfterViewInit {
   }
 
   removePopupTexts() {
-    console.log(this.popup);
     Array.from(this.popup.childNodes).forEach((childNode: any) => {
-      // alleen de 'p' nodes verwijderen, niet de topbar
+      // alleen de 'p' nodes bevatten tekst.
       if (childNode.localName == 'p') {
         this.renderer.removeChild(this.popup, childNode);
       }
@@ -86,15 +100,15 @@ export class DynamicTextComponent implements AfterViewInit {
   }
 
   createPopUpWindow() {
-    // maak popup
+    // maak de popup
     this.popup = this.renderer.createElement('div');
     this.renderer.addClass(this.popup, 'popupwindow');
 
-    // maak topbar
+    // maak de topbar
     const topBar = this.renderer.createElement('div');
     this.renderer.setAttribute(topBar, 'class', 'topbar');
 
-    // maak closebutton
+    // maak de closebutton
     const closeButton = this.renderer.createElement('img');
     this.renderer.setAttribute(
       closeButton,
@@ -104,14 +118,14 @@ export class DynamicTextComponent implements AfterViewInit {
     this.renderer.setAttribute(closeButton, 'class', 'button__close');
     this.renderer.listen(closeButton, 'click', () => this.hidePopup());
 
-    // voegtoe closebutton aan topbar
+    // voegtoe de closebutton aan topbar
     this.renderer.appendChild(topBar, closeButton);
 
-    // voegtoe topbar aan popup
+    // voegtoe de topbar aan popup
     this.renderer.appendChild(this.popup, topBar);
 
-    // voegtoe popup aan component view
-    this.renderer.appendChild(this.elementHost.nativeElement, this.popup);
+    // voegtoe de popup aan component view
+    this.renderer.appendChild(this.popupHost.nativeElement, this.popup);
   }
 
   /**
