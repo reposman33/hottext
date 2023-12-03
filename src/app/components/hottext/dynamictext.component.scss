@@ -8,6 +8,11 @@
   max-width: 75vw;
   overflow-y: auto;
   padding: 0.5rem 1rem;
+
+  [data-hottext] {
+    border: 1px dashed aliceblue;
+    border-radius: 5px;
+  }
 }
 
 :host ::ng-deep a {
@@ -18,7 +23,7 @@
 
 .popupwindow {
   background-color: white;
-  border: 3px inset darkgrey;
+  border: 6px inset darkgrey;
   color: darkslategrey;
   display: none;
   font-size: 1.1rem;
