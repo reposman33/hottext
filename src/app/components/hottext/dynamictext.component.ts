@@ -6,6 +6,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import popupTexts from 'src/assets/popupTexts.json';
 
 /**
  * === README ===
@@ -40,21 +41,7 @@ export class DynamicTextComponent implements AfterViewInit {
    * @description - maak de teksten voor popup window
    */
   initializePopupWindowTexts() {
-    this.popupTexts = {
-      OpenAI: [
-        'DeepMind',
-        'Usage',
-        'IBM Watson',
-        'Microsoft Azure',
-        'Google Cloud AI',
-        'Amazon Machine Learning',
-        'NVIDIA DGX',
-        'Intel AI',
-        'Apple Core ML',
-        'H2O.ai',
-        'OpenCV',
-      ],
-    };
+    this.popupTexts = popupTexts;
   }
 
   /**

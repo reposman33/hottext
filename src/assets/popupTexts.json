@@ -1,0 +1,28 @@
+{
+  "OpenAI": [
+    "DeepMind",
+    "Usage",
+    "IBM Watson",
+    "Microsoft Azure",
+    "Google Cloud AI",
+    "Amazon Machine Learning",
+    "NVIDIA DGX",
+    "Intel AI",
+    "Apple Core ML",
+    "H2O.ai",
+    "OpenCV"
+  ],
+  "Reuters": [
+    "ANP",
+    "Bloomberg",
+    "New York Times",
+    "Al Jazeera",
+    "AP",
+    "CNN",
+    "The Guardian",
+    "BBC",
+    "Yahoo Finance",
+    "MarketWatch",
+    "LexisNexis"
+  ]
+}
