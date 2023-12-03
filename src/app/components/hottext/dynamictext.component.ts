@@ -25,6 +25,7 @@ export class DynamicTextComponent implements AfterViewInit {
 
   @HostBinding('attr.class') cssClass!: string;
 
+  FILEPATH_TO_CLOSEBUTTON = '/assets/images/cross-close-button.png';
   constructor(private renderer: Renderer2) {}
 
   ngAfterViewInit() {
@@ -71,15 +72,45 @@ export class DynamicTextComponent implements AfterViewInit {
 
   hidePopup() {
     this.renderer.removeClass(this.popup, 'display');
-    Array.from(this.popup.childNodes).forEach((childNode) =>
-      this.renderer.removeChild(this.popup, childNode)
-    );
+    this.removePopupTexts();
+  }
+
+  removePopupTexts() {
+    console.log(this.popup);
+    Array.from(this.popup.childNodes).forEach((childNode: any) => {
+      // alleen de 'p' nodes verwijderen, niet de topbar
+      if (childNode.localName == 'p') {
+        this.renderer.removeChild(this.popup, childNode);
+      }
+    });
   }
 
   createPopUpWindow() {
+    // maak popup
     this.popup = this.renderer.createElement('div');
     this.renderer.addClass(this.popup, 'popupwindow');
-    this.renderer.listen(this.popup, 'click', () => this.hidePopup());
+
+    // maak topbar
+    const topBar = this.renderer.createElement('div');
+    this.renderer.setAttribute(topBar, 'class', 'topbar');
+
+    // maak closebutton
+    const closeButton = this.renderer.createElement('img');
+    this.renderer.setAttribute(
+      closeButton,
+      'src',
+      this.FILEPATH_TO_CLOSEBUTTON
+    );
+    this.renderer.setAttribute(closeButton, 'class', 'button__close');
+    this.renderer.listen(closeButton, 'click', () => this.hidePopup());
+
+    // voegtoe closebutton aan topbar
+    this.renderer.appendChild(topBar, closeButton);
+
+    // voegtoe topbar aan popup
+    this.renderer.appendChild(this.popup, topBar);
+
+    // voegtoe popup aan component view
     this.renderer.appendChild(this.elementHost.nativeElement, this.popup);
   }
 
