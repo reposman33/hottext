@@ -114,12 +114,42 @@ export class DynamicTextComponent implements AfterViewInit {
     this.renderer.appendChild(this.elementHost.nativeElement, this.popup);
   }
 
-  updatePopupText(clickedWord: string) {
-    this.dynamicTextAlternatives[clickedWord].forEach((textAlternative) => {
-      const paragraph = this.renderer.createElement('p');
-      const text = this.renderer.createText(textAlternative);
-      this.renderer.appendChild(paragraph, text);
-      this.renderer.appendChild(this.popup, paragraph);
+  /**
+   * updatePopupTexts
+   * @description - update de popup met de alternatieven voor het geklikte woord in de tekst
+   * @param clickedWord - het geklikte woord in de tekst
+   */
+  updatePopupTexts(clickedWord: string) {
+    this.popupTexts[clickedWord].forEach((textAlternative) => {
+      this.createPopupParagraph(textAlternative);
     });
+  }
+
+  /**
+   * createPopupParagraph
+   * @description - maak paragraph element voor de popup
+   * @param paragraphText - de tekst die vertoond wordt in de popup paragraph
+   */
+  createPopupParagraph(paragraphText: string) {
+    const paragraph = this.renderer.createElement('p');
+    const text = this.renderer.createText(paragraphText);
+    this.renderer.appendChild(paragraph, text);
+    // afhandelen klik op tekst in de popup
+    this.renderer.listen(paragraph, 'click', ($event) => {
+      this.updateHotText($event.target.textContent);
+      this.hidePopup();
+    });
+    this.renderer.appendChild(this.popup, paragraph);
+  }
+
+  /**
+   * updateHotText
+   * @description - als gebruiker klikt op alternatief in de popup moet deze woord in de tekst vervangen
+   * @param textAlternative - alternatieve tekst
+   */
+  updateHotText(textAlternative: string) {
+    const alternativeText = textAlternative;
+    // wijzig het woord in de tekst voor het woord in de popup
+    this.textClickContext.target.textContent = alternativeText;
   }
 }
