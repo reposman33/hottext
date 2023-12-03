@@ -1,18 +1,36 @@
-:host {
+:host ::ng-deep > div {
   background-color: slategray;
   border: 3px darkslategrey inset;
   color: white;
-  display: flex;
   font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
   font-size: 2rem;
   margin: 0 auto;
   max-width: 75vw;
   overflow-y: auto;
-  padding: 0.5rem 1.5rem;
+  padding: 0.5rem 1rem;
 }
 
 :host ::ng-deep a {
   color: gold;
   font-weight: 400;
   text-decoration: none;
+}
+
+.popupwindow {
+  background-color: white;
+  border: 1px solid darkslategrey;
+  color: darkslategrey;
+  display: none;
+  font-size: 1rem;
+  font-weight: bold;
+  height: fit-content;
+  left: 10px;
+  padding: 1rem;
+  position: absolute;
+  top: 10px;
+  width: 115x;
+}
+
+.display {
+  display: block;
 }
