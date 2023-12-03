@@ -18,17 +18,43 @@
 
 .popupwindow {
   background-color: white;
-  border: 1px solid darkslategrey;
+  border: 3px inset darkgrey;
   color: darkslategrey;
   display: none;
-  font-size: 1rem;
-  font-weight: bold;
+  font-size: 1.1rem;
+  font-weight: 600;
   height: fit-content;
   left: 10px;
   padding: 1rem;
   position: absolute;
   top: 10px;
   width: 115x;
+
+  p {
+    margin: 0.5rem;
+
+    &:hover {
+      background-color: bisque;
+      cursor: pointer;
+    }
+  }
+}
+
+.button__close {
+  width: 33px;
+  height: 33px;
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.topbar {
+  display: flex;
+  height: 34px;
+  justify-content: flex-end;
+  background-color: lightgrey;
+  margin: -16px -16px 5px -16px;
 }
 
 .display {
