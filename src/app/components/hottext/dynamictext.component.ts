@@ -30,6 +30,8 @@ export class DynamicTextComponent implements AfterViewInit {
   textClickContext: any;
 
   FILEPATH_TO_CLOSEBUTTON = '/assets/images/cross-close-button.png';
+  // op deze afstand van de kliklocatie wordt de de popup weergegeven zodat ie het woord niet verbergt
+  POPUPOFFSET = { X: 20, Y: 30 };
   constructor(private renderer: Renderer2) {}
 
   ngAfterViewInit() {
@@ -67,8 +69,16 @@ export class DynamicTextComponent implements AfterViewInit {
    * @param location
    */
   showPopup(location: { posX: number; posY: number }) {
-    this.renderer.setStyle(this.popup, 'top', location.posY + 'px');
-    this.renderer.setStyle(this.popup, 'left', location.posX + 'px');
+    this.renderer.setStyle(
+      this.popup,
+      'top',
+      location.posY + this.POPUPOFFSET.Y + 'px'
+    );
+    this.renderer.setStyle(
+      this.popup,
+      'left',
+      location.posX + this.POPUPOFFSET.X + 'px'
+    );
     this.renderer.addClass(this.popup, 'display');
   }
 
