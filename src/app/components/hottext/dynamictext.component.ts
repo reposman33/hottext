@@ -79,7 +79,7 @@ export class DynamicTextComponent implements AfterViewInit {
       'left',
       location.posX + this.POPUPOFFSET.X + 'px'
     );
-    this.renderer.addClass(this.popup, 'display');
+    this.renderer.addClass(this.popup, 'display__block');
   }
 
   hidePopup() {
