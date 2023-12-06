@@ -28,6 +28,12 @@ export class DynamicTextComponent implements AfterViewInit {
   popupTexts!: { [key: string]: string[] };
   // dit is het clickevent van text nodig om later te vervangen door popup text
   textClickContext: any;
+  CLASSES = {
+    displayBlock: 'display__block',
+    popupwindow: 'popupwindow',
+    topbar: 'topbar',
+    buttonClose: 'button__close',
+  };
 
   FILEPATH_TO_CLOSEBUTTON = '/assets/images/cross-close-button.png';
   // op deze afstand van de kliklocatie wordt de de popup weergegeven zodat ie het woord niet verbergt
@@ -79,11 +85,11 @@ export class DynamicTextComponent implements AfterViewInit {
       'left',
       location.posX + this.POPUPOFFSET.X + 'px'
     );
-    this.renderer.addClass(this.popup, 'display__block');
+    this.renderer.addClass(this.popup, this.CLASSES.displayBlock);
   }
 
   hidePopup() {
-    this.renderer.removeClass(this.popup, 'display');
+    this.renderer.removeClass(this.popup, this.CLASSES.displayBlock);
     this.removePopupTexts();
   }
 
@@ -99,11 +105,11 @@ export class DynamicTextComponent implements AfterViewInit {
   createPopUpWindow() {
     // maak de popup
     this.popup = this.renderer.createElement('div');
-    this.renderer.addClass(this.popup, 'popupwindow');
+    this.renderer.addClass(this.popup, this.CLASSES.popupwindow);
 
     // maak de topbar
     const topBar = this.renderer.createElement('div');
-    this.renderer.setAttribute(topBar, 'class', 'topbar');
+    this.renderer.setAttribute(topBar, 'class', this.CLASSES.topbar);
 
     // maak de closebutton
     const closeButton = this.renderer.createElement('img');
@@ -112,7 +118,7 @@ export class DynamicTextComponent implements AfterViewInit {
       'src',
       this.FILEPATH_TO_CLOSEBUTTON
     );
-    this.renderer.setAttribute(closeButton, 'class', 'button__close');
+    this.renderer.setAttribute(closeButton, 'class', this.CLASSES.buttonClose);
     this.renderer.listen(closeButton, 'click', () => this.hidePopup());
 
     // voegtoe de closebutton aan topbar
